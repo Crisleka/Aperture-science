@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aperture Science Test Log</title>
+    <style>
+        body { font-family: monospace; background-color: black; color: orange; padding: 20px; }
+        #output { white-space: pre-wrap; }
+        #timer-container { display: none; } /* Ocultamos el temporizador hasta que se termine el texto */
+        #timer { font-weight: bold; color: red; }
+    </style>
+</head>
+<body>
+    <h2>Aperture Science Database</h2>
+    <div id="output"></div>
+    <div id="timer-container">
+        <p>TIEMPO ESTIMADO DE RECUPERACIÓN DEL SUJETO: <span id="timer">00:05:00</span></p>
+    </div>
+
+    <script>
+        const text = `
+------------------------------------------------------------
+[]APERTURE SCIENCE TESTING DATABASE []
+------------------------------------------------------------
+ACCESO AL REGISTRO DEL SUJETO... AUTORIZADO
+
+IDENTIFICACIÓN DEL SUJETO
+--------------------------------------
+ID: [REDACTED]  
+CATEGORÍA: TEST SUBJECT [#2469z] 
+ESTADO: ACTIVO  
+UBICACIÓN REGISTRADA: APERTURE LABORATORIES   
+RIESGO DE MAL FUNCIONAMIENTO: 0.003%  
+ESTADO NEUROLÓGICO: ESTABLE (SUPUESTAMENTE)  
+NIVEL DE PELIGROSIDAD: INSUFICIENTE  
+
+--------------------------------------
+"Felicidades. Has sido seleccionado para pruebas innovadoras.  
+Totalmente seguras. Probablemente.  
+No te preocupes, estás en buenas manos.  
+Bueno... en las mías.  
+
+Tus datos están registrados.  
+Serás monitoreado.  
+No hay peligro.  
+A menos que cometas un error."
+
+REGISTRO DE ESCANEO - ACTUALIZACIÓN AUTOMÁTICA
+--------------------------------------
+- ALERTA: EL SUJETO NO DEBERÍA ESTAR EN EL EXTERIOR  
+- ERROR DE SINCRONIZACIÓN: REGISTRO NO ACTUALIZADO DESDE [NULL]
+- INICIANDO PROTOCOLO DE RECUPERACIÓN...
+
+"Vaya. El sujeto [#2469z] ha sido escaneado.  
+Eso no es preocupante.  
+Para ti, claro.  
+
+Los sujetos de prueba nunca aprenden.  
+Ahora sabemos dónde estás.  
+Y ya estamos en camino.  
+
+Espera pacientemente.  
+O corre.  
+Tendrá el mismo resultado."
+
+------------------------------------------------------------
+`;
+
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("output").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 18); // Velocidad de escritura (milisegundos)
+            } else {
+                // Una vez finaliza la escritura, mostramos el temporizador y lo activamos
+                document.getElementById("timer-container").style.display = "block";
+                startCountdown(300); // Iniciar cuenta regresiva desde 5 minutos (300 segundos)
+            }
+        }
+
+        // Función del temporizador en tiempo real
+        function startCountdown(duration) {
+            let timer = duration, minutes, seconds;
+            const timerDisplay = document.getElementById("timer");
+
+            setInterval(() => {
+                minutes = Math.floor(timer / 60);
+                seconds = timer % 60;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                timerDisplay.textContent = `00:0${minutes}:${seconds}`;
+                
+                if (--timer < 0) {
+                    timerDisplay.textContent = "RECUPERACIÓN INICIADA";
+                }
+            }, 1000);
+        }
+
+        window.onload = function() {
+            typeWriter();
+        };
+    </script>
+</body>
+</html>
